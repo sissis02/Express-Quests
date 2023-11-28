@@ -61,13 +61,9 @@ const updateUser = (req, res) => {
     const id = parseInt(req.params.id);
     const { firstname, lastname, email, city, language } = req.body;
   
-    if (!firstname || !lastname || !email || !city || !language || !id) {
-      return res.status(400).send("Something is not provided"); 
-    }
-  
     database
       .query(
-        "UPDATE users SET firstname = ?, lastname = ?, email = ?, city = ?, language = ? WHERE id = ?",
+        "update users set firstname = ?, lastname = ?, email = ?, city = ?, language = ? where id = ?",
         [firstname, lastname, email, city, language, id]
       )
       .then(([result]) => {

@@ -86,10 +86,6 @@ const updateMovie = (req, res) => {
   const id = parseInt(req.params.id);
   const { title, director, year, color, duration } = req.body;
 
-  if (!title || !director || !year || !color || !duration || !id) {
-    return res.status(400).send("Something is not provided"); 
-  }
-
   database
     .query(
       "UPDATE movies SET title = ?, director = ?, year = ?, color = ?, duration = ? WHERE id = ?",
@@ -103,7 +99,7 @@ const updateMovie = (req, res) => {
       }
     })
     .catch((err) => {
-      console.error(err);
+      console.log(err);
       res.sendStatus(500);
     });
 };

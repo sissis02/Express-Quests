@@ -167,6 +167,40 @@ describe("PUT /api/users/:id", () => {
     const response = await request(app).put("/api/users/0").send(newUser);
 
     expect(response.status).toEqual(404);
-  });
-});
+  }); 
+
+
+  describe("DELETE /api/users/:id", () => {
+    it("should edit users", async () => {
+      const newUser = {
+        firstname: "Marie",
+      lastname: "Martin",
+      email: `${crypto.randomUUID()}@wild.co`,
+      city: "Paris",
+      language: "French",
+      }; 
+  
+      const [resultt] = await database.query("INSERT INTO users(firstname, lastname, email, city, language) VALUES (?, ?, ?, ?, ?)",
+      [newUser.firstname, newUser.lastname, newUser.email, newUser.city, newUser.language]
+      ); 
+  
+      const id = resultt.insertId; 
+  
+      const response = await request(app)
+      .delete(`/api/users/${id}`)
+  
+      expect(response.status).toEqual(204);
+
+    });
+
+      it("should return an err", async () => {
+    
+        const response = await request(app).delete("/api/users/0");
+    
+        expect(response.status).toEqual(404);
+  
+  
+    });
+
+})});
 

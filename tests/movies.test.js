@@ -18,7 +18,7 @@ describe("GET /api/movies", () => {
 
 describe("GET /api/movies/:id", () => {
   it("should return one movie", async () => {
-    const response = await request(app).get("/api/movies/1");
+    const response = await request(app).get("/api/movies/3");
 
     expect(response.headers["content-type"]).toMatch(/json/);
 
@@ -166,4 +166,39 @@ describe("PUT /api/movies/:id", () => {
 
 
   });
-});
+
+
+  describe("DELETE /api/movies/:id", () => {
+    it("should edit movie", async () => {
+      const newMovie = {
+        title: "Avatar", 
+        director: "James Cameron", 
+        year: "2009", 
+        color: "1", 
+        duration: 162, 
+      }; 
+  
+      const [resultt] = await database.query("INSERT INTO movies(title, director, year, color, duration) VALUES (?, ?, ?, ?, ?)",
+      [newMovie.title, newMovie.director, newMovie.year, newMovie.color, newMovie.duration]
+      ); 
+  
+      const id = resultt.insertId; 
+  
+      const response = await request(app)
+      .delete(`/api/movies/${id}`)
+  
+      expect(response.status).toEqual(204);
+
+    });
+
+      it("should return an err", async () => {
+    
+        const response = await request(app).delete("/api/movies/0");
+    
+        expect(response.status).toEqual(404);
+  
+  
+    });
+  
+
+})});
